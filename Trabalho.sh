@@ -1,6 +1,5 @@
 #!/bin/bash
-# Autor: Thales
-# Contato: thales.faggiano@sp.senai.br
+# Autor: Grupo OMEGA
 aguarde(){
 	echo "Pressione [enter] para concluir"
 	read presione
@@ -68,8 +67,22 @@ trabalho02(){
 aguarde
 }
 
-trabalho03(){
-	echo "exercicio03"
+trabalho03(){ 
+clear
+SALARIO=1
+while (($SALARIO !=0)); do
+	echo -n "Digite um salário qualquer: "
+	read SALARIO
+TEMPZ=$(echo "scale=2; $SALARIO >= 500.00" | bc)
+	if (($TEMPZ == 1)); then
+	TEMPSAL=$(echo "scale=2; $SALARIO*1.10" | bc)
+	echo "Seu salário é $TEMPSAL"
+	else
+	TEMPSAL=$(echo "scale=2; $SALARIO*1.20" | bc)
+	echo "Seu salário é $TEMPSAL"
+	fi
+done
+	
 	aguarde
 }
 
