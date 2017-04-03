@@ -1,9 +1,11 @@
 #!/bin/bash
-# Autor: Grupo OMEGA
+		# Autor: Grupo OMEGA
+		#Integrantes:
 aguarde(){
-	echo "Pressione [enter] para concluir"
+	echo "Pressione uma tecla para retonar ao menu."
 	read presione
 }
+		#Script dos programas.
 trabalho01(){
 clear
 DIG=1 
@@ -39,7 +41,7 @@ fi
 	fi
 done
 
-aguarde
+	aguarde
 }
 
 trabalho02(){
@@ -64,7 +66,7 @@ trabalho02(){
 	done
 	echo "O maior numero eh: $MAIOR"
 
-aguarde
+	aguarde
 }
 
 trabalho03(){ 
@@ -87,29 +89,28 @@ done
 }
 
 trabalho04(){
-	w=1
-while (( $w != 0 )); do
-	 	echo "Digite um numero ou [ 0 ] para sair"
-		read n
-		if (( $n > 0 )); then
-			let pri=($pri+1)
-			if (( $pri == 1 )); then
-				num=$n
-			fi
-			
-				if (( $n == $num )); then
-				let cont=($cont+1)
-				fi
-				if (( $n < $num )); then
-				cont=1
-				num=$n	
-				fi
+	CONTAR=1
+while (( $CONTAR != 0 )); do
+	echo "Digite um numero ou [ 0 ] para sair"
+	read NUMER
+	if (( $NUMER > 0 )); then
+		let FIRST=($FIRST+1)
+		if (( $FIRST == 1 )); then
+			NUMBER=$NUMER
 		fi
-	 w=$n
+		if (( $NUMBER == $NUMER )); then
+			let CONTE=($CONTE+1)
+		fi
+		if (( $NUMER < $NUMBER )); then
+				CONTE=1
+			NUMBER=$NUMER	
+			fi
+		fi
+	 CONTAR=$NUMER
 	 done
-	 echo "O menor numero digitado foi $num, $cont vez(es)"
+	 echo "O menor numero digitado foi $NUMBER, $CONTE vez(es)"
 
-aguarde
+	aguarde
 }
 
 trabalho05(){
@@ -163,12 +164,13 @@ if (($TEMP == 1)); then
 	echo "Esse eh o maior numero: $MAIOR"
 fi
 
-aguarde
+	aguarde
 }
-
+	#Menu de opções onde o usuário seleciona o programa.
 VAR=0
 while (( $VAR != 6 )); do
 	clear
+	echo "Bem vindo ao menu de opções"
 	echo "Digite uma opcao"
 	echo "1) Trabalho 01"
 	echo "2) Trabalho 02"
