@@ -92,7 +92,7 @@ done
 trabalho04(){
 	CONTAR=1
 while (( $CONTAR != 0 )); do
-	echo "Digite um numero ou [ 0 ] para sair"
+	echo "Digite um numero qualquer."
 	read NUMER
 	if (( $NUMER > 0 )); then
 		let FIRST=($FIRST+1)
@@ -109,7 +109,7 @@ while (( $CONTAR != 0 )); do
 		fi
 	 CONTAR=$NUMER
 	 done
-	 echo "O menor numero digitado foi $NUMBER, $CONTE vez(es)"
+	 echo "O menor número digitado foi $NUMBER,e foi digitado $CONTE vez(es)"
 
 	aguarde
 }
