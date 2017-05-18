@@ -1,5 +1,7 @@
 #!/bin/bash
 clear
+function CRIARQ(){
+}
 
 function CARQ(){
 
@@ -11,7 +13,7 @@ ARQ=$(dialog   --stdout					\
 
 SELECIONAR=$(dialog   --stdout					\
 		--title	'Nome do diretorio onde deseja copiar'	\
-		--inputbox 'insira o nome do diretorio'		\
+		--inputbox 'Insira o nome do diretorio'		\
 0 0)
 
 cp $ARQ $SELECIONAR
@@ -23,29 +25,48 @@ SUCESSO=$(dialog --stdout		\
 
 }
 #---------------------------------------------------------
-function RA(){
-echo "O bagulho é loko memo"
-echo "Pressione a porcaria de uma tecla"
-read XXX
+function MRARQ(){
+
+ARQ=$(dialog   --stdout						\
+		--title	'Nome do arquivo que deseja remover'	\
+		--inputbox 'Insira o nome do arquivo'		\
+0 0)
+
+rm $ARQ
 }
 
+function APARQ(){
+ARQ=$(dialog   --stdout						\
+		--title	'Nome do arquivo que deseja remover'	\
+		--inputbox 'Insira o nome do arquivo'		\
+0 0)
+
+rm $ARQ
+
+}
+
+function BKARQ(){
+}
 
 MENU=$(dialog --stdout                          \
 	--title 'Gerenciamento de Arquivo'	\
 	--menu   'Escolha uma opçao'		\
 	0 0 0					\
- 1 'Copiar arquivos'			        \
- 2 'Remover Arquivos'			        \
- 3 'Backup de Arquivos'				\
- 4 'Voltar')				        
+ 1 'Criar arquivos e diretorios'
+ 2 'Copiar arquivos e diretorios'
+ 3 'Mover ou renomear arquivos e diretorios'
+ 4 'Apagar arquivos e diretorios'
+ 5 'Backup'
+ 6 'Sair')
 
 case $MENU in
 
-  1)CARQ ;;
-  2)RA ;;
-  3)BA ;;
-  4)clear ;;
-  *)read ppp 
+  1)CRIARQ ;;
+  2)CARQ ;;
+  3)MRARQ ;;
+  4)APARQ ;;
+  5)BKARQ ;;
+  6)SAIR ;; 
 
 esac
 
