@@ -1,6 +1,6 @@
 #!/bin/bash
 
-################################FUNÇ#####################################
+################################FUNÇÃO#####################################
 CAU(){
 OP=$( dialog	--stdout			\
 		--title 'Usuário '		\
@@ -26,7 +26,7 @@ useradd -m -d /home/$CRIAR -r -s /bin/bash $CRIAR
 
 dialog 						\
 --title	'WELLDONE'				\
---msgbox 'criado com sucesso' \
+--msgbox 'criado com sucesso' 			\
 6 40
 
 
@@ -40,7 +40,7 @@ userdel -r $APAGAR
 
 dialog 						\
 --title	'WELLDONE'				\
---msgbox 'Apagado com sucesso' \
+--msgbox 'Apagado com sucesso' 			\
 6 40
 
 
@@ -100,10 +100,19 @@ fi
 }
 
 MODG(){
-echo "Só de passagem mesmo."
-echo "Pressione [ENTER] pra vazar"
-read XXX
+NOME_U=$( dialog 	--stdout		\
+			--title 'Nome do usuário' \
+			--inputbox 'Insira o nome do usuário' \
+			0 0)
+
+NOME_G=$( dialog 	--stdout		\
+			--title 'Nome do grupo' \
+			--inputbox 'Insira o nome do grupo' \
+			0 0)
 }
+
+gpasswd $NOME_U $NOME_G
+
 ################################PROGRAMA###################################
 OP=$( dialog	--stdout			\
 		--title 'Opções para usuário'	\
