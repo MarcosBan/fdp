@@ -100,18 +100,19 @@ fi
 }
 
 MODG(){
-NOME_U=$( dialog 	--stdout		\
+NOME_U=$(dialog 	--stdout		\
 			--title 'Nome do usuário' \
 			--inputbox 'Insira o nome do usuário' \
 			0 0)
 
-NOME_G=$( dialog 	--stdout		\
+NOME_G=$(dialog 	--stdout		\
 			--title 'Nome do grupo' \
 			--inputbox 'Insira o nome do grupo' \
 			0 0)
+
+gpasswd -a $NOME_U $NOME_G
 }
 
-gpasswd $NOME_U $NOME_G
 
 ################################PROGRAMA###################################
 OP=$( dialog	--stdout			\
@@ -133,4 +134,3 @@ case $OP in
 esac
 
 
-echo $USER
