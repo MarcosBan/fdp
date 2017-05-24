@@ -6,7 +6,7 @@ clear
 function CRIARQ(){
    USB=$( dialog --stdout						\
     --title 'Criação de Arquivos ou Diretorios'				\
-    --inputbox 'Deseja criar arquivos ou diretorio?'			\
+    --menu 'Deseja criar arquivos ou diretorio?'			\
      0 0)
 
 if [ $USB == "a" ]; then

@@ -1,156 +1,111 @@
 #!/bin/bash
 clear
-######################### FUNÇÃO ##########################################
+######################### Função secundaria ###########################
+
+
+
+######################### FUNÇÃO ######################################
 function CRIARQ(){
 	QNT=$(dialog 	--stdout				\
 	--title 'Criação do Arquivo ou diretorio'		\
-	--inputbox 'Deseja criar arquivo(a) ou diretorio(d)? '	\
-	0 0)
-#--------------------------------------------------------------------------#
-if [ $QNT == "a" ]; then 
+	--menu 'Deseja criar arquivo(a) ou diretorio(d)? '	\
+	0 0 0							\
+	1 'Criar arquivo'					\
+	2 'Criar diretorio'					\
+	3 'Voltar')
+if [ $QNT == "1" ]; then 
 ARQUIVO=$(dialog	--stdout				     \
 --title 'Criação de arquivo'					     \
 --inputbox 'Digite o nome e a extenção que deseja para seu arquivo:' \
 0 0)
 		cat > $ARQUIVO
 
-	PARABENS=$(dialog --stdout				\
-		--title 'Sucesso'              			\
-		--msgbox 'Arquivo criado com sucesso' 		\
-		0 0)
-elif [ $QNT == "d" ]; then
-DIRETORIO=$(dialog	--stdout				\
+elif [ $QNT == "2" ]; then
+DIRETORIO=$( dialog	--stdout				\
 --title 'Criação de Diretorio'					\
 --inputbox 'Digite o nome do Diretorio desejado ?'		\
 0 0)
 	mkdir $DIRETORIO
-PARABENS=$(dialog --stdout					\
-		--title 'Sucesso'              			\
-		--msgbox 'Diretorio criado com sucesso' 	\
-		0 0)
 fi
+
 }
 #-----------------------------------------------------------------------
 function COARQ(){
-	DIG=$(dialog --stdout					\
-	--title 'Copia de Arquivo ou diretorio'			\
-	--inputbox 'Deseja copiar arquivo(a) ou diretorio(d)? '	\
-	0 0)
-#------------------------------------------------------------------------#
-if [ $DIG == "a" ]; then 
-ARQ=$(dialog   --stdout						\
+	DIG=$( dialog --stdout					\
+		--title 'Copia de Arquivo ou diretorio'		\
+		--inputbox 'Deseja copiar arquivo(a) ou diretorio(d)?'\
+		0 0)
+ARQ=$( dialog   --stdout					\
 		--title	'Nome do arquivo que deseja copiar'	\
 		--inputbox 'insira o nome do arquivo'		\
 		0 0)
 
-SELECIONAR=$(dialog   --stdout					\
+SELECIONAR=$( dialog   --stdout					\
 		--title	'Nome do diretorio onde deseja copiar'	\
 		--inputbox 'Insira o nome do diretorio'		\
 		0 0)
 
 cp $ARQ $SELECIONAR
 
-SUCESSO=$(dialog --stdout					\
-		--title 'Sucesso'              			\
-		--msgbox 'Arquivo copiado com sucesso' 		\
-		0 0)
-#elif [ $DIG == "d" ]; then
-#DIR=$(dialog   --stdout						\
-#		--title	'Nome do diretorio que deseja copiar'	\
-#		--inputbox 'insira o nome do diretorio:'	\
-#		0 0)
-#
-#SELECIONAR=$(dialog   --stdout					\
-#		--title	'Nome do diretorio onde deseja copiar'	\
-#		--inputbox 'Insira o nome do diretorio'		\
-#0 0)
-#
-#cp $DIR $SELECIONAR
-#
-#SUCESSO=$(dialog --stdout					\
-#		--title 'Sucesso'              			\
-#		--msgbox 'Diretorio copiado com sucesso' 	\
-#		0 0)
 fi
+
 }
 #----------------------------------------------------------------------#
 function MRARQ(){
-	BABY=$(dialog --stdout					\
+	BABY=$( dialog --stdout					\
 	--title 'Mover ou Renomear '				\
-	--inputbox 'Deseja Mover(M) ou Renoamear(R) ? '		\
-	0 0)
-#-----------------------------------------------------------------------#
-if [ $BABY == "M" ]; then
- MOV=$(dialog   --stdout					\
-	--title	'Mover'						\
-	--inputbox 'Deseja Mover Aquivo(A) ou Diretorio(D) : '	\
-		0 0)
-	if [ $MOV == "A" ]; then 
- 	 AR=$(dialog --stdout					\
-	--title 'Mover Arquivos'				\
-	--inputbox 'Qual o nome do arquivo que deseja mover :'	\
-	0 0)
-	ON=$(dialog --stdout 					\
-	--title 'Mover Arquivos'				\
-	--inputbox 'Digite para onde deseja mover o arquivo :'	\
-	0 0)
-		mv $AR $ON
+	--menu 'Deseja Mover ou Renomear ? '			\
+	0 0 0							\
+	1 'Mover'						\
+	2 'Renomear'						\
+	3 'Voltar')
 
-	PERFEITO=$(dialog --stdout				\
-		--title 'Sucesso'              			\
-		--msgbox 'Arquivo movido com sucesso' 		\
-		0 0)
-#----------------------------------------------------------------------#
-	elif [ $MOV == "D" ]; then 
-	 DI=$(dialog --stdout					\
-	--title 'Mover Diretorio'				\
-	--inputbox 'Qual o nome do Diretorio que deseja mover :'\
-		0 0)
-	LO=$(dialog --stdout 					\
-	--title 'Mover Diretorio'				\
-	--inputbox 'Digite para onde deseja mover o Diretorio :'\
-	0 0)
-		mv $DI $LO
-
-   MARAVILHA=$(dialog --stdout					\
-	--title 'Sucesso'	              			\	
-	--msgbox 'Diretorio movido com sucesso' 		\
-		0 0)
+if [ $BABY == 1 ]; then
+ MOV=$( dialog   --stdout					\
+	--title	'Tipo de arquivo'				\
+	--menu 'Selecione o tipo'				\
+	0 0 0							\
+	1 'Arquivo'						\
+	2 'Diretorio'						\
+	3 'Voltar')
+	if [ $MOV = 1 ]; then 
+	
+	fi
 fi
 fi
-	if [ $BABY = "R" ]; then
-		RE=$(dialog   --stdout				\
+	elif [ $BABY = 1 ]; then
+		RE=$( dialog   --stdout				\
 	--title	'Renomear'					\
 	--inputbox 'Deseja Renomear Arquivo(A) ou Diretorio(D):' \
 		0 0)
 	if [ $RE == "A" ]; then 
- 	 ARQU=$(dialog --stdout					\
+ 	 ARQU=$( dialog --stdout				\
 	--title 'Renomear Arquivos'				\
 	--inputbox 'Qual o nome do arquivo que deseja Renomear:'\
 		0 0)
-	PA=$(dialog --stdout 					\
+	PA=$( dialog --stdout 					\
 		--title 'Renomear Arquivos'			\
 		--inputbox 'Digite o novo nome do arquivo :'	\
 		0 0)
 		mv $ARQU $PA
 
-	PERFEITO=$(dialog --stdout				\
+	PERFEITO=$( dialog --stdout				\
 		--title 'Sucesso'              			\
 		--msgbox 'Arquivo renomeado com sucesso'	\
 		0 0)
-#---------------------------------------------------------------------#
+
 	elif [ $RE == "D" ]; then 
-	 DIRE=$(dialog --stdout					\
+	 DIRE=$( dialog --stdout				\
 --title 'Renomear Diretorio'					\
 --inputbox 'Qual o nome do Diretorio que deseja Renomear:'	\
 		0 0)
-	NOV=$(dialog --stdout 					\
+	NOV=$( dialog --stdout 					\
 	--title 'Renomear Diretorio'				\
 	--inputbox 'Digite o novo nome para o Diretorio :'	\
 	0 0)
 		mv $DIRE $NOV
 
-   MARAVILHA=$(dialog --stdout					\
+   MARAVILHA=$( dialog --stdout					\
 		--title 'Sucesso'              			\
 		--msgbox 'Diretorio renomeado com sucesso' 	\
 		0 0)
@@ -159,18 +114,18 @@ fi
 }
 #----------------------------------------------------------------------#
 function APARQ(){
-ARQ=$(dialog   --stdout						\
+ARQ=$( dialog   --stdout					\
 		--title	'Apagar '				\
 		--inputbox 'Apagar Arquivo(A) ou Diretorio(D) ?'\
 		0 0)
 if [ $ARQ == "A" ]; then
-	QU=$(dialog --stdout 					\
+	QU=$( dialog --stdout 					\
 	--title 'Apagar Arquivo'				\
 	--inputbox 'Qual o nome do arquivo que deseja apagar :'	\
 	0 0)
 	rm -rf $QU
  elif [ $ARQ == "D" ]; then 
-   QUAL=$(dialog --stdout					\
+   QUAL=$( dialog --stdout					\
     --title 'Apagar Diretorio'					\
     --inputbox 'Qual o nome do diretorio que deseja apagar :'	\
     0 0)
@@ -201,9 +156,3 @@ case $MENU in
   5) BKARQ ;;
  #6) echo; exit 0 ;; 
 esac
-
-
-
-
-
-
