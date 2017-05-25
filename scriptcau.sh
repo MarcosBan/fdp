@@ -14,6 +14,11 @@ if [ -z $1 ]; then
 	break
 fi
 }
+ALTERU(){
+if [ $TMP == 0 ]; then
+dialog --stdout --title 'Alterações realizadas' --editbox /etc/passwd 0 0; sleep1.5
+fi
+}
 ################################FUNÇÕES PRIMARIAS###############################
 CAU(){
 	VZS=1
@@ -30,24 +35,26 @@ if (( $OP == "1")); then
 				--title 'Nome do usuário'		\
 				--inputbox 'Insira o nome do usuário'	\
 				0 0)
-			VERIFY $USER
+			VERIFY $USER 
 	PASS=$( dialog 		--stdout				\
 				--title 'Senha do usuário' 		\
 				--inputbox 'Insira a senha' 		\
 				0 0)
-			VERIFY $PASS
+			VERIFY $PASS  
 	CONF_P=$( dialog          --stdout           			\
                                   --title 'Confirmação'			\
                                   --passwordbox 'Insira a senha novamente'   \
                                   0 0)
+			VERIFY $CONF_P
+			ALTERU 
 	if [ $PASS == $CONF_P ]; then
-	useradd -m -d /home/$USER -r -s /bin/bash $USER
-	(echo $PASS ; echo $PASS) | passwd $USER
-	CONFIRM; sleep 2.5
-	VZS=$?
+		useradd -m -d /home/$USER -r -s /bin/bash $USER
+		(echo $PASS ; echo $PASS) | passwd $USER
+			CONFIRM; sleep 2.5
+			VZS=$?
 	else
-	dialog --stdout --ok-label vai --infobox "Senha incopativél" 0 0
-	VZS=1
+		dialog --stdout --ok-label vai --infobox "Senha incopativél" 0 0
+			VZS=1
 	fi
 
 
@@ -66,6 +73,7 @@ VZS=$?
 done
 #EM FASE DE TESTES PARA REDUZIR ERROS
 #MAIS OPÇÕES ESTÃO POR VIR
+ALTERU
 
 INICIAR
 }
@@ -124,38 +132,37 @@ while (($VZS != 0)); do
 RESUL=$(grep $PESQUISA /etc/passwd)
 
 
-dialog	--yes-label Confirma --no-label Voltar				\
+ dialog --stdout --yes-label Confirma --no-label Voltar			\
 	--title 'Confirme' 						\
 	--yesno "$RESUL. Este é o usuário que você deseja altera?" 	\
 7 60
 
 CONF=$?
-	if [$CONF == 0]; then
-	PASS=$( dialog 	--stdout				\
-			--title 'Pesquisa' 			\
-			--inputbox 'Insira o nome do usuário' 	\
-			0 0)
-			VERIFY $PASS
-	CONF_P=$( dialog 	--stdout					\
-				--title 'Confirmação' 				\
-				--passwordbox 'Confirme a senha do usuário' 	\
-				0 0)
-		(echo $CONF_P ; echo $CONF_P) | passwd $PESQUISA
-	CONFIRM
-	else
 
+	if [ $CONF == "0" ]; then
+	NPASS=$( dialog 	--stdout				\
+			--title 'Nova senha' 				\
+			--inputbox 'Insira a nova senha do usuário' 	\
+			0 0)
+			VERIFY $NPASS
+	CONF_PN=$( dialog 	--stdout				\
+				--title 'Confirmação' 			\
+				--passwordbox 'Confirme a senha do usuário' \
+				0 0)
+		
+		(echo $CONF_PN ; echo $CONF_PN) | passwd $PESQUISA
+		CONFIRM
+	else
 		dialog --stdout --msgbox "Senha inconpativél" 0 0
-	CONFIRM
+	
 	fi
 
-	VZS=$?
 done
 #EM FASE DE TESTES PARA REDUZIR ERROS
 #MAIS OPÇÕES ESTÃO POR VIR
 
 INICIAR
 }
-
 
 #----------------------------------------------------------------------------#
 MODG(){
@@ -255,7 +262,8 @@ OPI=$( dialog    --stdout                        \
 	VERIFY $DONO; VERIFY $GRUPO; VERIFY $WAY
 	chown $DONO:$GRUPO $WAY
 
-	fi 
+	fi
+VZS=$? 
 done 
 #EM FASE DE TESTES PARA REDUZIR ERROS
 #MAIS OPÇÕES ESTÃO POR VIR
