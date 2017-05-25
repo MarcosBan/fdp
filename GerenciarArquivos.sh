@@ -3,18 +3,19 @@ clear
 ######################### Função secundaria ###########################
 CONFIRM(){
 TMP=$?
-if [ $TMP == 0 ]; then
+if (( $TMP == 0 )); then
 	dialog --stdout --infobox "Realizado com sucesso" 0 0
-	else
-	dialog --stdout --pause "Processo não realizado tente novamente" 0 0 3
+elif (( $TMP == 1)); then
+	dialog --stdout --infobox "Processo não realizado tente novamente" 0 0 3
 fi
+
 }
 
 ######################### FUNÇÃO ######################################
-function CRIARQ(){
+CRIARQ(){
 VZS=1
 while (( $VZS != 0 )); do
-	QNT=$(dialog 	--stdout				\
+	QNT=$( dialog 	--stdout				\
 	--title 'Criar'						\
 	--menu 'Deseja criar Arquivo ou Diretorio?'		\
 	0 0 0							\
@@ -22,30 +23,28 @@ while (( $VZS != 0 )); do
 	2 'Criar diretorio'					\
 	3 'Voltar')
 if [ $QNT == 1 ]; then 
-ARQUIVO=$(dialog	--stdout				     \
+ARQUIVO=$( dialog	--stdout				     \
 --title 'Criação de arquivo'					     \
 --inputbox 'Digite o nome e a extenção que deseja para seu arquivo:' \
 0 0)
 		> $ARQUIVO
-	CONFIRM
+	#CONFIRM
 elif [ $QNT == 2 ]; then
 DIRETORIO=$( dialog	--stdout				\
 --title 'Criação de Diretorio'					\
 --inputbox 'Digite o nome do Diretorio desejado ?'		\
 0 0)
 		mkdir $DIRETORIO
-	CONFIRM
-else 
-	VZS=0
-	LOBY
+	#CONFIRM
+
 fi
 done
 LOBY
 }
 #-----------------------------------------------------------------------
-function COARQ(){
+COARQ(){
 VZS=1
-while (( $VZS != 1 )); do
+while (( $VZS != 0 )); do
 OPIS=$( dialog --stdout                                 	\
         --title 'Tipo'                            		\
         --menu 'Deseja copiar Arquivo ou Diretorio? '           \
@@ -65,7 +64,7 @@ if [ $OPIS == 1 ]; then
 			0 0)
 
 		cp $ARQ $SELECIONAR
-		CONFIRM
+		#CONFIRM
 elif [ $OPIS == 2 ]; then
 	DIR=$( dialog   --stdout                                        \
                         --title 'Nome do arquivo que deseja copiar'     \
@@ -77,18 +76,16 @@ elif [ $OPIS == 2 ]; then
                         --inputbox 'Insira o nome do diretorio'         \
                         0 0)
 		cp -r $DIR $SELEC
-		CONFIRM
-else 
-	VZS=1
-	LOBY
+		#CONFIRM
+
 fi
 done
 LOBY
 }
 #----------------------------------------------------------------------#
-function MRARQ(){
+MRARQ(){
 	VZS=1
-while (( $VZS != 1 )); do
+while (( $VZS != 0 )); do
 	BABY=$( dialog --stdout					\
 	--title 'Mover ou Renomear '				\
 	--menu 'Deseja Mover ou Renomear ? '			\
@@ -107,7 +104,7 @@ if [ $BABY == 1 ]; then
 		--inputbox 'Insira o nome do diretorio ou o caminho até ele.'	\
 		0 0)
 	mv $ARQD $CAMI
-	CONFIRM
+	#CONFIRM
 elif [ $BABY == 2 ]; then
 	ARQD=$( dialog --stdout                                 \
                 --title 'Nome do arquivo ou diretório'          \
@@ -119,16 +116,14 @@ elif [ $BABY == 2 ]; then
                 0 0)
 
 	mv $ARQD $NARQD
-	CONFIRM
-else
-	VZS=1
-	LOBY
+	#CONFIRM
+
 fi
 done
 LOBY
 }
 #----------------------------------------------------------------------#
-function APARQ(){
+APARQ(){
 	VZS=1
 while (( $VZS != 0 )); do
 ARQ=$( dialog   --stdout					\
@@ -144,17 +139,16 @@ if [ $ARQ == 1 ]; then
 	--inputbox 'Qual o nome do arquivo que deseja apagar :'	\
 	0 0)
 	rm  $APARQ
-	CONFIRM
- elif [ $ARQ == 2 ]; then 
+	#CONFIRM
+ 
+elif [ $ARQ == 2 ]; then 
    	APDIR=$( dialog --stdout					\
     	--title 'Apagar Diretorio'					\
     	--inputbox 'Qual o nome do diretorio que deseja apagar :'	\
     	0 0)
 	rm -rf $APDIR
-	CONFIRM
- else
-	VZS=1
-	LOBY
+	#CONFIRM
+
 fi
 done
 LOBY
@@ -175,14 +169,13 @@ MENU=$(dialog --stdout                          \
  6 'Voltar')					\
 
 case $MENU in
-
   1) CRIARQ ;;
   2) COARQ ;;
   3) MRARQ ;;
   4) APARQ ;;
   5) BKARQ ;;
- #6) echo; exit 0 ;; 
 esac
+
 }
-#####################################Programa################################################
+######################Programa##############################
 LOBY

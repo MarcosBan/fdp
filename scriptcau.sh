@@ -64,6 +64,8 @@ userdel -r $APAGAR
 fi
 VZS=$?
 done
+#EM FASE DE TESTES PARA REDUZIR ERROS
+#MAIS OPÇÕES ESTÃO POR VIR
 
 INICIAR
 }
@@ -102,6 +104,8 @@ delgroup $APAGAR
 fi
 	VZS=$?
 done
+#EM FASE DE TESTES PARA REDUZIR ERROS
+#MAIS OPÇÕES ESTÃO POR VIR
 
 INICIAR
 }
@@ -146,6 +150,9 @@ CONF=$?
 
 	VZS=$?
 done
+#EM FASE DE TESTES PARA REDUZIR ERROS
+#MAIS OPÇÕES ESTÃO POR VIR
+
 INICIAR
 }
 
@@ -194,6 +201,8 @@ gpasswd -d $USER $GROUP
 fi
 	VZS=$?
 done
+#EM FASE DE TESTES PARA REDUZIR ERROS
+#MAIS OPÇÕES ESTÃO POR VIR
 
 INICIAR
 }
@@ -248,7 +257,8 @@ OPI=$( dialog    --stdout                        \
 
 	fi 
 done 
-
+#EM FASE DE TESTES PARA REDUZIR ERROS
+#MAIS OPÇÕES ESTÃO POR VIR
 INICIAR
 
 }
