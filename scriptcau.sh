@@ -3,16 +3,16 @@
 CONFIRM(){
 TEMP=$?
 if (( $TEMP == 0 )); then
- 	dialog --stdout --infobox 'Realizado com sucesso' 0 0; sleep 2.5
+ 	dialog --stdout --infobox 'Realizado com sucesso' 0 0; sleep 1.5
 elif (( $TEMP == 1 )); then
- 	dialog --stdout --pause 'Processo não finalizado tente novamente' 100 50 5
+ 	dialog --stdout --infobox 'Processo não finalizado tente novamente' 0 0; sleep 2.5
 fi
 }
 VERIFY(){
-	if [ -z $1 ]; then
-		dialog --stdout --infobox "Impossivél identificar, campo em branco" 20 10; sleep 2.5
-		VZS=1
-	fi
+if [ -z $1 ]; then
+	dialog --stdout --msgbox "Impossivél identificar, campo em branco" 0 0; sleep 1.5
+	break
+fi
 }
 ################################FUNÇÕES PRIMARIAS###############################
 CAU(){
@@ -26,24 +26,24 @@ OP=$( dialog	--stdout			\
 	2 'Apagar usuário' 			\
 	3 'Voltar')
 if (( $OP == "1")); then
-	CRIAR=$( dialog 	--stdout				\
+	USER=$( dialog 	--stdout				\
 				--title 'Nome do usuário'		\
 				--inputbox 'Insira o nome do usuário'	\
 				0 0)
-			VERIFY $CRIAR
+			VERIFY $USER
 	PASS=$( dialog 		--stdout				\
 				--title 'Senha do usuário' 		\
 				--inputbox 'Insira a senha' 		\
 				0 0)
 			VERIFY $PASS
-	CONF_P=$( dialog          --stdout                     				\
-                                  --title 'Confirmação'					\
-                                  --passwordbox 'Insira a senha novamente'             	\
+	CONF_P=$( dialog          --stdout           			\
+                                  --title 'Confirmação'			\
+                                  --passwordbox 'Insira a senha novamente'   \
                                   0 0)
-	if [ $PASS == $CONF_P]; then
-	useradd -m -d /home/$CRIAR -r -s /bin/bash $CRIAR
-	(echo $PASS ; echo $PASS) | passwd $CRIAR
-	CONFIRM
+	if [ $PASS == $CONF_P ]; then
+	useradd -m -d /home/$USER -r -s /bin/bash $USER
+	(echo $PASS ; echo $PASS) | passwd $USER
+	CONFIRM; sleep 2.5
 	VZS=$?
 	else
 	dialog --stdout --ok-label vai --infobox "Senha incopativél" 0 0
@@ -245,7 +245,7 @@ OPI=$( dialog    --stdout                        \
                         0 0)
 	VERIFY $DONO; VERIFY $GRUPO; VERIFY $WAY
 	chown $DONO:$GRUPO $WAY
-	
+
 	fi 
 done 
 
