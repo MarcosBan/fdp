@@ -71,8 +71,7 @@ userdel -r $APAGAR
 fi
 VZS=$?
 done
-#EM FASE DE TESTES PARA REDUZIR ERROS
-#MAIS OPÇÕES ESTÃO POR VIR
+
 ALTERU
 
 INICIAR
@@ -112,8 +111,6 @@ delgroup $APAGAR
 fi
 	VZS=$?
 done
-#EM FASE DE TESTES PARA REDUZIR ERROS
-#MAIS OPÇÕES ESTÃO POR VIR
 
 INICIAR
 }
@@ -158,8 +155,6 @@ CONF=$?
 	fi
 
 done
-#EM FASE DE TESTES PARA REDUZIR ERROS
-#MAIS OPÇÕES ESTÃO POR VIR
 
 INICIAR
 }
@@ -208,8 +203,6 @@ gpasswd -d $USER $GROUP
 fi
 	VZS=$?
 done
-#EM FASE DE TESTES PARA REDUZIR ERROS
-#MAIS OPÇÕES ESTÃO POR VIR
 
 INICIAR
 }
@@ -221,9 +214,11 @@ OPI=$( dialog    --stdout                        \
                  --title 'Opções para usuário'   \
                  --menu 'Escolha uma opção'      \
          0 0 0                                   \
-        1 'Permissão'		                     \
-        2 'Mudar dono da pasta'                      \
-        3 'Voltar')
+        1 'Permissão'		    		                     \
+        2 'Mudar dono e grupo da pasta'         	             \
+        3 'Mudar dono da pasta'						\
+	4 'Mudar grupo da pasta'					\
+	5 'Voltar')
 	
 	if [ $OPI == 1 ]; then
 		MEN=$( dialog --stdout									 \
@@ -261,12 +256,35 @@ OPI=$( dialog    --stdout                        \
                         0 0)
 	VERIFY $DONO; VERIFY $GRUPO; VERIFY $WAY
 	chown $DONO:$GRUPO $WAY
-
+	elif [ $OPI == 3 ]; then
+	DONO=$( dialog --stdout                        		    \
+                --title "Nome do dono"             		    \
+                --inputbox "Insira o nome do usuário dono da pasta" \
+                0 0)
+	VERIFY $DONO
+	WAY=$(dialog --stdout                        		   \
+                     --title "Nome do diretório" 	            	   \
+                     --inputbox "Insira o nome ou caminho do diretorio"   \
+                     0 0)
+	VERIFY $WAY
+	chown $DONO $WAY
+	elif [ $OPI == 4 ]; then
+		GRUPO=$(dialog --stdout                        			    \
+                        --title "Nome do grupo"             			    \
+                        --inputbox "Insira o nome grupo que poderá acessar a pasta" \
+                        0 0)
+		VERIFY $GRUPO
+		WAY=$(dialog --stdout                        		   \
+                        --title "Nome do diretório"             	   \
+                        --inputbox "Insira o nome ou caminho do diretorio" \
+                        0 0)
+		VERIFY $WAY
+		chgrp $GRUPO $WAY  
 	fi
+	
 VZS=$? 
 done 
-#EM FASE DE TESTES PARA REDUZIR ERROS
-#MAIS OPÇÕES ESTÃO POR VIR
+
 INICIAR
 
 }
