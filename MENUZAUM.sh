@@ -282,7 +282,7 @@ OPI=$( dialog    --stdout                        \
 		VERIFY $WAY
 		chgrp $GRUPO $WAY  
 	fi
-	
+
 VZS=$? 
 done 
 
@@ -333,9 +333,22 @@ if [  -z  $1  ]; then
 fi
 }
 
-VIADAGEM(){
-VIADO=$(ls)
-dialog --stdout --msgbox "$VIADO" 0 0
+VDIR(){
+OPCAO=$( dialog --stdout --yes-label Atual --no-label EspecÍfico	\
+		--title 'Verificação' 					\
+		--yesno 'Deseja verificar diretorio' 			\
+		0 0)
+	if [ $OPCAO == 0 ]; then
+		VERDIR=$(ls)
+dialog --stdout --title "Arquivos do diretorio atual." --msgbox "$VERDIR" 0 0
+	elif [ $OPCAO == 1 ]; then
+		PESQUISA=$( dialog --stdout 				\
+				--title 'Diretorio especifico' 		\
+				--inputbox 'Digite o nome do diretorio' \
+				0 0)
+		ls $PESQUISA > PVERDIR
+		dialog --stdout	--title "Arquivos do diretorio $PESQUISA." --msgbox "$PVERDIR" 0 0
+	fi
 }
 #######################################################################
 CONFIRM(){
@@ -351,29 +364,32 @@ fi
 CRIARQ(){
 VZS=1
 while (( $VZS != "0" )); do
-	QNT=$(dialog 	--stdout				\
+	OPIS=$( dialog 	--stdout				\
 	--title 'Criar'						\
 	--menu 'Deseja criar Arquivo ou Diretorio?'		\
 	0 0 0							\
 	1 'Criar arquivo'					\
 	2 'Criar diretorio'					\
-	3 'Voltar' )
-if [ $QNT == "1" ]; then
-VIADAGEM
+	3 'Verificar diretorio'					\
+	4 'Voltar' )
+if [ $OPIS == "1" ]; then
+	VDIR
 ARQUIVO=$(dialog	--stdout				     \
 --title 'Criação de arquivo'					     \
 --inputbox 'Digite o nome e a extenção que deseja para seu arquivo:' \
 0 0)
 		> $ARQUIVO
 	CONFIRM
-elif [ $QNT == "2" ]; then
-VIADAGEM
+elif [ $OPIS == "2" ]; then
+	VDIR
 DIRETORIO=$( dialog	--stdout				\
 --title 'Criação de Diretorio'					\
 --inputbox 'Digite o nome do Diretorio desejado ?'		\
 0 0)
 		mkdir $DIRETORIO
 	CONFIRM
+elif [ $OPIS == "3" ]; then
+	DIRAT
 else
 	break
 fi
@@ -391,9 +407,10 @@ OPIS=$( dialog 	--stdout                                 	\
         0 0 0                                                   \
         1 'Mover'                                               \
         2 'Renomear'                                            \
-        3 'Voltar')
+        3 'Verificar diretorio'					\
+	4 'Voltar')
 if [ $OPIS == "1" ]; then
-VIADAGEM
+VDIR
 	ARQ=$( dialog   --stdout					\
 			--title	'Nome do arquivo que deseja copiar'	\
 			--inputbox 'insira o nome do arquivo'		\
@@ -407,7 +424,7 @@ VIADAGEM
 		cp $ARQ $SELECIONAR
 		CONFIRM
 elif [ $OPIS == "2" ]; then
-VIADAGEM
+	VDIR
 	DIR=$( dialog   --stdout                                        \
                         --title 'Nome do arquivo que deseja copiar'     \
                         --inputbox 'insira o nome do arquivo'           \
@@ -419,6 +436,8 @@ VIADAGEM
                         0 0)
 		cp -r $DIR $SELEC
 		CONFIRM
+elif [ $OPIS == "3" ]; then
+	VDIR
 else
 	break
 fi
@@ -439,7 +458,7 @@ while (( $VZS != "0" )); do
 	3 'Voltar')
 
 if [ $BABY == "1" ]; then
-VIADAGEM
+VDIR
 	ARQD=$( dialog --stdout					\
 		--title 'Nome do arquivo ou diretório'		\
 		--inputbox 'Insira o nome do arquivo'		\
@@ -451,7 +470,7 @@ VIADAGEM
 	mv $ARQD $CAMI
 	CONFIRM
 elif [ $BABY == "2" ]; then
-VIADAGEM
+VDIR
 	ARQD=$( dialog --stdout                                 \
                 --title 'Nome do arquivo ou diretório'          \
                 --inputbox 'Insira o nome do arquivo'           \
@@ -484,7 +503,7 @@ ARQ=$( dialog   --stdout					\
 		3 'Voltar')
 
 if [ $ARQ == "1" ]; then
-VIADAGEM
+	VDIR
 	APARQ=$( dialog --stdout 				\
 	--title 'Apagar Arquivo'				\
 	--inputbox 'Qual o nome do arquivo que deseja apagar :'	\
@@ -493,18 +512,20 @@ VIADAGEM
 	CONFIRM
 
  elif [ $ARQ == "2" ]; then
-VIADAGEM
+	VDIR
    	APDIR=$( dialog --stdout					\
     	--title 'Apagar Diretorio'					\
     	--inputbox 'Qual o nome do diretorio que deseja apagar :'	\
     	0 0)
 	rm -rf $APDIR
 	CONFIRM
+ elif [ $ARQ == "3" ]; then
+	VDIR
 else
 	break
 fi
 done
-LOBY
+	LOBY
 }
 
 # BKARQ(){
@@ -608,4 +629,5 @@ case $MENU in
 esac
 }
 ##################################################################################################################################
+
 RAIZ
