@@ -24,27 +24,27 @@ fi
 CAU(){
 	VZS=1
 while (($VZS != 0)); do 
-OP=$( dialog	--stdout			    \
-		--title 'Usuário '		      \
+OP=$( dialog	--stdout			\
+		--title 'Usuário '		\
 		--menu 'Escolha uma opção'	\
-	0 0 0					          \
+	0 0 0					\
 	1 'Criar  usuário'	 		\
 	2 'Apagar usuário' 			\
 	3 'Voltar')
 if (( $OP == "1")); then
-	USER=$( dialog 	--stdout				            \
-				--title 'Nome do usuário'		          \
+	USER=$( dialog 	--stdout				\
+				--title 'Nome do usuário'		\
 				--inputbox 'Insira o nome do usuário'	\
 				0 0)
 			VERIFY $USER 
-	PASS=$( dialog 		--stdout				    \
-				--title 'Senha do usuário' 		  \
+	PASS=$( dialog 		--stdout				\
+				--title 'Senha do usuário' 		\
 				--inputbox 'Insira a senha' 		\
 				0 0)
 			VERIFY $PASS  
-	CONF_P=$( dialog          --stdout           			                          \
-                                  --title 'Confirmação'			                  \
-                                  --passwordbox 'Insira a senha novamente'    \
+	CONF_P=$( dialog          --stdout           			\
+                                  --title 'Confirmação'			\
+                                  --passwordbox 'Insira a senha novamente'   \
                                   0 0)
 			VERIFY $CONF_P
 			ALTERU 
@@ -60,9 +60,9 @@ if (( $OP == "1")); then
 
 
 elif (( $OP == "2")); then
-	APAGAR=$( dialog 	--stdout			            \
-				--title 'Nome do usuário'	            \
-				--inputbox 'Insira o nome do usuário' \
+	APAGAR=$( dialog 	--stdout			    \
+				--title 'Nome do usuário'	    \
+				--inputbox 'Insira o nome do pivet' \
 				0 0)
 		VERIFY $APAGAR
 userdel -r $APAGAR
@@ -77,6 +77,8 @@ ALTERU
 
 INICIAR
 }
+
+
 
 #----------------------------------------------------------------------------#
 CAG(){
@@ -287,9 +289,40 @@ done
 INICIAR
 
 }
+
+
+
+#----------------------------------------------------------------------------#
+
+INICIAR(){
+
+OP=$( dialog	--stdout			\
+		--title 'Opções para usuário'	\
+		--menu 'Escolha uma opção'	\
+	0 0 0					\
+	1 'Criar ou apagar usuario' 			\
+	2 'Criar ou apagar grupos'			\
+	3 'Modificar senha de  usuarios'		\
+	4 'Modificar grupos'				\
+	5 'Modificar permissões'			\
+	6 'Sair')
+
+case $OP in
+	1)CAU ;;
+	2)CAG ;;
+	3)MODU ;;
+	4)MODG ;;
+	5)MODP ;;
+	#6)SAIR ;;
+	#*)echo 'Opção incorreta';;
+esac
+
 }
+##################################PROGRAMA####################################
 
-
+INICIAR
+}
+##############################################################################
 GA(){
 clear
 ######################### Função secundaria ###########################
