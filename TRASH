@@ -1,0 +1,10 @@
+Get:1 http://security.debian.org jessie/updates InRelease [63.1 kB]
+Get:2 http://security.debian.org jessie/updates/main Sources [196 kB]
+Get:3 http://security.debian.org jessie/updates/main amd64 Packages [407 kB]
+Ign http://httpredir.debian.org jessie InRelease
+Get:4 http://httpredir.debian.org jessie Release.gpg [2,373 B]
+Get:5 http://httpredir.debian.org jessie Release [148 kB]
+Get:6 http://httpredir.debian.org jessie/main Sources [7,055 kB]
+Get:7 http://httpredir.debian.org jessie/main amd64 Packages [6,790 kB]
+Fetched 14.7 MB in 8s (1,676 kB/s)
+Reading package lists...
