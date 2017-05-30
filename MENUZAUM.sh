@@ -14,6 +14,7 @@ elif (( $TMP == "1"  )); then
 	dialog --stdout --infobox "Processo não realizado tente novamente" 0 0 3; sleep 1.5
 fi
 }
+
 ###############################FUNÇÕES PRIMARIAS############################
 GU(){
 CAU(){
@@ -284,6 +285,8 @@ INICIAR
 
 }
 
+
+
 #----------------------------------------------------------------------------#
 
 INICIAR(){
@@ -305,8 +308,8 @@ case $OP in
 	3)MODU ;;
 	4)MODG ;;
 	5)MODP ;;
-	6)RAIZ ;;
-	
+	#6)SAIR ;;
+	#*)echo 'Opção incorreta';;
 esac
 
 }
@@ -533,7 +536,7 @@ case $MENU in
   3) MRARQ ;;
   4) APARQ ;;
   5) BKARQ ;;
-  6) RAIZ ;; 
+ #6) echo; exit 0 ;; 
 esac
 }
 #####################################Programa################################################
@@ -647,7 +650,7 @@ case $REDE in
  	3) REMIP ;;
 	4) ADP ;;
 	5) CONFDHCP ;; 
-	6) RAIZ ;;
+	6) QNT ;;
 esac
 }
 QNT
@@ -655,10 +658,10 @@ QNT
 #############################################################################################
 GR(){
 ATPCT(){
-AT=$( dialog --stdout	--yes-label Sim	--no-label Não		\
+AT=$( dialog --stdout	--yes-label Sim	--no-label Não	\
 	--title 'Atualização de pacotes'			\
 	--yesno ' Deseja realmente atualizar todos os pacotes ?'\
-	0 0)
+	0 0) 
 AT=$?
 if [ $AT = 0 ]; then 
 	apt-get update #> TRASH
@@ -698,7 +701,7 @@ case $CENTRAL in
 	1) ATPCT ;;
 	2) INPCT ;;
 	3) DNPCT ;;
-	4) RAIZ ;;
+	#4)
 esac
 }
 ####################################################################################################################################
@@ -715,13 +718,13 @@ MENU=$( dialog --stdout						\
 		2 'Gerenciamento de Arquivo'			\
 		3 'Gerenciamento de Rede   '			\
 		4 'Gerenciamento de Repositorio'		\
-		5 'Sair')
-case $MENU in
+		5 'Gerenciamento de Dispositivo')
+case $MENU in 
 	1) GU ;;
 	2) GA ;;
 	3) GRD ;;
 	4) GR ;;
-	5) exit 0;;
+	5) GD ;;
 esac
 }
 ##################################################################################################################################
