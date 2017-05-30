@@ -1,25 +1,35 @@
 #!/bin/bash
-GU(){
 ################################FUNÇÕES SECUNDÁRIAS#############################
-CONFIRM(){
-TEMP=$?
-if (( $TEMP == 0 )); then
- 	dialog --stdout --infobox 'Realizado com sucesso' 0 0; sleep 1.5
-elif (( $TEMP == 1 )); then
- 	dialog --stdout --infobox 'Processo não finalizado tente novamente' 0 0; sleep 2.5
-fi
-}
 VERIFY(){
 if [ -z $1 ]; then
 	dialog --stdout --msgbox "Impossivél identificar, campo em branco" 0 0; sleep 1.5
 	break
 fi
 }
-ALTERU(){
-if [ $TMP == 0 ]; then
-dialog --stdout --title 'Alterações realizadas' --editbox /etc/passwd 0 0; sleep1.5
+CONFIRM(){
+TMP=$?
+if (( $TMP == "0" )); then
+	dialog --stdout --infobox "Realizado com sucesso" 0 0; sleep 1.5
+elif (( $TMP == "1"  )); then
+	dialog --stdout --infobox "Processo não realizado tente novamente" 0 0 3; sleep 1.5
 fi
 }
+GU(){
+################################FUNÇÕES SECUNDÁRIAS#############################
+#CONFIRM(){
+#TEMP=$?
+#if (( $TEMP == 0 )); then
+# 	dialog --stdout --infobox 'Realizado com sucesso' 0 0; sleep 1.5
+#elif (( $TEMP == 1 )); then
+# 	dialog --stdout --infobox 'Processo não finalizado tente novamente' 0 0; sleep 2.5
+#fi
+#}
+#VERIFY(){
+#if [ -z $1 ]; then
+#	dialog --stdout --msgbox "Impossivél identificar, campo em branco" 0 0; sleep 1.5
+#	break
+#fi
+#}
 ################################FUNÇÕES PRIMARIAS###############################
 CAU(){
 	VZS=1
@@ -73,8 +83,6 @@ fi
 VZS=$?
 done
 
-ALTERU
-
 INICIAR
 }
 
@@ -91,7 +99,6 @@ OP=$( dialog	--stdout			\
 	1 'Criar  Grupo' 		\
 	2 'Apagar Grupo' 		\
 	3 'Voltar')
-
 if (( $OP == "1")); then
 	CRIAR=$( dialog 	--stdout				\
 				--title 'Nome do usuário' 		\
@@ -112,7 +119,6 @@ delgroup $APAGAR
 fi
 	VZS=$?
 done
-
 INICIAR
 }
 
@@ -257,6 +263,7 @@ OPI=$( dialog    --stdout                        \
                         0 0)
 	VERIFY $DONO; VERIFY $GRUPO; VERIFY $WAY
 	chown $DONO:$GRUPO $WAY
+	CONFIRM
 	elif [ $OPI == 3 ]; then
 	DONO=$( dialog --stdout                        		    \
                 --title "Nome do dono"             		    \
@@ -269,6 +276,7 @@ OPI=$( dialog    --stdout                        \
                      0 0)
 	VERIFY $WAY
 	chown $DONO $WAY
+	CONFIRM
 	elif [ $OPI == 4 ]; then
 		GRUPO=$(dialog --stdout                        			    \
                         --title "Nome do grupo"             			    \
@@ -281,6 +289,7 @@ OPI=$( dialog    --stdout                        \
                         0 0)
 		VERIFY $WAY
 		chgrp $GRUPO $WAY  
+		CONFIRM
 	fi
 
 VZS=$? 
@@ -326,12 +335,12 @@ INICIAR
 GA(){
 clear
 ######################### Função secundaria ###########################
-VERIFY(){
-if [  -z  $1  ]; then
-	  dialog --stdout --msgbox "Impossivél indentificar, campo em branco"0 0; sleep 2.5
-	break
-fi
-}
+#VERIFY(){
+#if [  -z  $1  ]; then
+#	  dialog --stdout --msgbox "Impossivél indentificar, campo em branco"0 0; sleep 2.5
+#	break
+#fi
+#}
 
 VDIR(){
 OPCAO=$( dialog --stdout --yes-label Atual --no-label EspecÍfico	\
