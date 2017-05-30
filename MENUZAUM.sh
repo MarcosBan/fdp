@@ -14,23 +14,8 @@ elif (( $TMP == "1"  )); then
 	dialog --stdout --infobox "Processo não realizado tente novamente" 0 0 3; sleep 1.5
 fi
 }
+###############################FUNÇÕES PRIMARIAS############################
 GU(){
-################################FUNÇÕES SECUNDÁRIAS#############################
-#CONFIRM(){
-#TEMP=$?
-#if (( $TEMP == 0 )); then
-# 	dialog --stdout --infobox 'Realizado com sucesso' 0 0; sleep 1.5
-#elif (( $TEMP == 1 )); then
-# 	dialog --stdout --infobox 'Processo não finalizado tente novamente' 0 0; sleep 2.5
-#fi
-#}
-#VERIFY(){
-#if [ -z $1 ]; then
-#	dialog --stdout --msgbox "Impossivél identificar, campo em branco" 0 0; sleep 1.5
-#	break
-#fi
-#}
-################################FUNÇÕES PRIMARIAS###############################
 CAU(){
 	VZS=1
 while (($VZS != 0)); do 
@@ -334,14 +319,6 @@ INICIAR
 ##############################################################################
 GA(){
 clear
-######################### Função secundaria ###########################
-#VERIFY(){
-#if [  -z  $1  ]; then
-#	  dialog --stdout --msgbox "Impossivél indentificar, campo em branco"0 0; sleep 2.5
-#	break
-#fi
-#}
-
 VDIR(){
 OPCAO=$( dialog --stdout --yes-label Atual --no-label EspecÍfico	\
 		--title 'Verificação' 					\
