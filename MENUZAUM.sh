@@ -1,5 +1,12 @@
 #!/bin/bash
-################################FUNÇÕES SECUNDÁRIAS#############################
+##############################################################################
+#				   Omega				     #
+#Gabi Ribeiro, Thiago Leal, Tiago Francisco, Natan Ferreira e Marcos Silva   #
+#Em caso de alteração notifique um participante da equipe omega.             #
+#Nome do programa Omega 0.5						     #
+#									     #
+#Ùltima atualização 31/05/2017						     # 
+###############################FUNÇÕES SECUNDÁRIAS############################
 VERIFY(){
 if [ -z $1 ]; then
 	dialog --stdout --msgbox "Impossivél identificar, campo em branco" 0 0; sleep 1.5
