@@ -16,7 +16,9 @@ fi
 }
 
 ###############################FUNÇÕES PRIMARIAS############################
+#-------------------------Gerenciamento de usuários-----------------------#
 GU(){
+
 CAU(){
 	VZS=1
 while (($VZS != 0)); do 
@@ -43,14 +45,14 @@ if (( $OP == "1")); then
                                   --passwordbox 'Insira a senha novamente'   \
                                   0 0)
 			VERIFY $CONF_P
-			ALTERU 
+			 
 	if [ $PASS == $CONF_P ]; then
 		useradd -m -d /home/$USER -r -s /bin/bash $USER
 		(echo $PASS ; echo $PASS) | passwd $USER
 			CONFIRM; sleep 2.5
 			VZS=$?
 	else
-		dialog --stdout --ok-label vai --infobox "Senha incopativél" 0 0
+		dialog --stdout --infobox "Senha incopativél" 0 0
 			VZS=1
 	fi
 
@@ -92,8 +94,8 @@ if (( $OP == "1")); then
 				0 0)
 	VERIFY $CRIAR
 groupadd $CRIAR
-
 	CONFIRM
+
 elif (( $OP == "2")); then
 	APAGAR=$( dialog 	--stdout				\
 				--title 'Nome do grupo' 		\
@@ -110,10 +112,6 @@ INICIAR
 
 #----------------------------------------------------------------------------#
 MODU(){
-
-	VZS=1
-while (($VZS != 0)); do 
-
 	PESQUISA=$( dialog 	--stdout				\
 				--title 'Pesquisa' 			\
 				--inputbox 'Insira o nome do usuário' 	\
@@ -147,7 +145,6 @@ CONF=$?
 	
 	fi
 
-done
 
 INICIAR
 }
@@ -179,6 +176,7 @@ if [ $OPI == 1 ]; then
 	VERIFY $GROUP
 gpasswd -a $USER $GROUP
 	CONFIRM
+
 elif [ $OPI == 2 ]; then
  
 	USER=$( dialog  --stdout                                       \
@@ -193,6 +191,7 @@ elif [ $OPI == 2 ]; then
 	VERIFY $GROUP
 gpasswd -d $USER $GROUP
 	CONFIRM
+
 fi
 	VZS=$?
 done
@@ -231,6 +230,7 @@ OPI=$( dialog    --stdout                        \
 		VERIFY $PASTA
 		chmod $MEN $PASTA
 		CONFIRM
+	
 		if [$TEMP = 1]; then
 		dialog --stdout --infobox "Foi aplicada a permissão $MEN no diretorio $PASTA" 0 0; sleep 1.5
 		fi
@@ -250,6 +250,7 @@ OPI=$( dialog    --stdout                        \
 	VERIFY $DONO; VERIFY $GRUPO; VERIFY $WAY
 	chown $DONO:$GRUPO $WAY
 	CONFIRM
+	
 	elif [ $OPI == 3 ]; then
 	DONO=$( dialog --stdout                        		    \
                 --title "Nome do dono"             		    \
@@ -272,13 +273,14 @@ OPI=$( dialog    --stdout                        \
 		WAY=$(dialog --stdout                        		   \
                         --title "Nome do diretório"             	   \
                         --inputbox "Insira o nome ou caminho do diretorio" \
-                        0 0)
+			  0 0)
 		VERIFY $WAY
 		chgrp $GRUPO $WAY  
 		CONFIRM
+		
 	fi
+VZS=$?
 
-VZS=$? 
 done 
 
 INICIAR
@@ -300,7 +302,7 @@ OP=$( dialog	--stdout			\
 	3 'Modificar senha de  usuarios'		\
 	4 'Modificar grupos'				\
 	5 'Modificar permissões'			\
-	6 'Sair')
+	6 'Voltar')
 
 case $OP in
 	1)CAU ;;
@@ -308,8 +310,8 @@ case $OP in
 	3)MODU ;;
 	4)MODG ;;
 	5)MODP ;;
-	#6)SAIR ;;
-	#*)echo 'Opção incorreta';;
+	6)RAIZ ;;
+	
 esac
 
 }
@@ -321,31 +323,25 @@ INICIAR
 GA(){
 clear
 VDIR(){
-OPCAO=$( dialog --stdout --yes-label Atual --no-label EspecÍfico	\
-		--title 'Verificação' 					\
-		--yesno 'Deseja verificar diretorio' 			\
-		0 0)
-	if [ $OPCAO == 0 ]; then
+ dialog 	 --yes-label Atual --no-label EspecÍfico		\
+		--title 'Verificação'	 				\
+		--yesno 'Verificar diretorio'	 			\
+		0 0
+OP=$?
+	if [ $OP == 0 ]; then
 		VERDIR=$(ls)
 dialog --stdout --title "Arquivos do diretorio atual." --msgbox "$VERDIR" 0 0
-	elif [ $OPCAO == 1 ]; then
+	elif [ $OP == 1 ]; then
 		PESQUISA=$( dialog --stdout 				\
 				--title 'Diretorio especifico' 		\
 				--inputbox 'Digite o nome do diretorio' \
 				0 0)
-		ls $PESQUISA > PVERDIR
+	 	 PVERDIR=$(ls $PESQUISA)
 		dialog --stdout	--title "Arquivos do diretorio $PESQUISA." --msgbox "$PVERDIR" 0 0
 	fi
 }
-#######################################################################
-CONFIRM(){
-TMP=$?
-if (( $TMP == "0" )); then
-	dialog --stdout --infobox "Realizado com sucesso" 0 0; sleep 1.5
-elif (( $TMP == "1"  )); then
-	dialog --stdout --infobox "Processo não realizado tente novamente" 0 0 3; sleep 1.5
-fi
-}
+
+
 
 ######################### FUNÇÃO ######################################
 CRIARQ(){
@@ -360,7 +356,6 @@ while (( $VZS != "0" )); do
 	3 'Verificar diretorio'					\
 	4 'Voltar' )
 if [ $OPIS == "1" ]; then
-	VDIR
 ARQUIVO=$(dialog	--stdout				     \
 --title 'Criação de arquivo'					     \
 --inputbox 'Digite o nome e a extenção que deseja para seu arquivo:' \
@@ -368,15 +363,16 @@ ARQUIVO=$(dialog	--stdout				     \
 		> $ARQUIVO
 	CONFIRM
 elif [ $OPIS == "2" ]; then
-	VDIR
+	#VDIR
 DIRETORIO=$( dialog	--stdout				\
 --title 'Criação de Diretorio'					\
 --inputbox 'Digite o nome do Diretorio desejado ?'		\
 0 0)
 		mkdir $DIRETORIO
 	CONFIRM
+
 elif [ $OPIS == "3" ]; then
-	DIRAT
+	VDIR
 else
 	break
 fi
@@ -392,22 +388,21 @@ OPIS=$( dialog 	--stdout                                 	\
         --title 'Tipo'                            		\
         --menu 'Deseja copiar Arquivo ou Diretorio? '           \
         0 0 0                                                   \
-        1 'Mover'                                               \
-        2 'Renomear'                                            \
-        3 'Verificar diretorio'					\
-	4 'Voltar')
+        1 'Arquivo'                                               \
+        2 'Diretorio'                                            \
+        3 'Voltar')
 if [ $OPIS == "1" ]; then
 VDIR
 	ARQ=$( dialog   --stdout					\
 			--title	'Nome do arquivo que deseja copiar'	\
 			--inputbox 'insira o nome do arquivo'		\
 			0 0)
-
+	VERIFY $ARQ
 	SELEC=$( dialog   --stdout					\
 			--title	'Nome do diretorio onde deseja copiar'	\
 			--inputbox 'Insira o nome do diretorio'		\
 			0 0)
-
+	VERIFY $SELEC
 		cp $ARQ $SELECIONAR
 		CONFIRM
 elif [ $OPIS == "2" ]; then
@@ -423,8 +418,6 @@ elif [ $OPIS == "2" ]; then
                         0 0)
 		cp -r $DIR $SELEC
 		CONFIRM
-elif [ $OPIS == "3" ]; then
-	VDIR
 else
 	break
 fi
@@ -462,11 +455,12 @@ VDIR
                 --title 'Nome do arquivo ou diretório'          \
                 --inputbox 'Insira o nome do arquivo'           \
                 0 0)
+	VERIFY $ARQD
 	NARQD=$( dialog --stdout             		                      \
                 --title 'Novo nome do arquivo ou diretório'	              \
                 --inputbox 'Insira o novo nome do arquivo ou diretorio'       \
                 0 0)
-
+	VERIFY $NARQD
 	mv $ARQD $NARQD
 	CONFIRM
 else
@@ -487,10 +481,11 @@ ARQ=$( dialog   --stdout					\
 		0 0 0						\
 		1 'Arquivo'					\
 		2 'Diretorio'					\
-		3 'Voltar')
+		3 'Verificar diretorio'				\
+		4 'Voltar')
 
-if [ $ARQ == "1" ]; then
-	VDIR
+	if [ $ARQ == "1" ]; then
+
 	APARQ=$( dialog --stdout 				\
 	--title 'Apagar Arquivo'				\
 	--inputbox 'Qual o nome do arquivo que deseja apagar :'	\
@@ -498,36 +493,35 @@ if [ $ARQ == "1" ]; then
 	rm  $APARQ
 	CONFIRM
 
- elif [ $ARQ == "2" ]; then
-	VDIR
+ 	elif [ $ARQ == "2" ]; then
+
    	APDIR=$( dialog --stdout					\
     	--title 'Apagar Diretorio'					\
     	--inputbox 'Qual o nome do diretorio que deseja apagar :'	\
     	0 0)
 	rm -rf $APDIR
 	CONFIRM
- elif [ $ARQ == "3" ]; then
+ 	elif [ $ARQ == "3" ]; then
 	VDIR
-else
+	else
 	break
-fi
+	fi
 done
 	LOBY
 }
 
-# BKARQ(){
-#}
 LOBY(){
-MENU=$(dialog --stdout                          \
-	--title 'Gerenciamento de Arquivo'	\
-	--menu   'Escolha uma opçao'		\
-	0 0 0					\
- 1 'Criar arquivos e diretorios'		\
- 2 'Copiar arquivos e diretorios'		\
- 3 'Mover ou renomear arquivos e diretorios'	\
- 4 'Apagar arquivos e diretorios'		\
- 5 'Backup'					\
- 6 'Voltar')					\
+PWD=$(pwd)
+MENU=$(dialog --stdout                          	\
+	--title "Gerenciamento de Arquivo em $PWD"	\
+	--menu   'Escolha uma opçao'			\
+	0 0 0						\
+ 1 'Criar arquivos e diretorios'			\
+ 2 'Copiar arquivos e diretorios'			\
+ 3 'Mover ou renomear arquivos e diretorios'		\
+ 4 'Apagar arquivos e diretorios'			\
+ 5 'Verificar diretorios'				\
+ 6 'Voltar')						\
 
 case $MENU in
 
@@ -535,8 +529,8 @@ case $MENU in
   2) COARQ ;;
   3) MRARQ ;;
   4) APARQ ;;
-  5) BKARQ ;;
- #6) echo; exit 0 ;; 
+  5) VDIR ; LOBY ;;
+  6) RAIZ ;; 
 esac
 }
 #####################################Programa################################################
@@ -650,7 +644,7 @@ case $REDE in
  	3) REMIP ;;
 	4) ADP ;;
 	5) CONFDHCP ;; 
-	6) QNT ;;
+	6) RAIZ ;;
 esac
 }
 QNT
@@ -658,36 +652,46 @@ QNT
 #############################################################################################
 GR(){
 ATPCT(){
-AT=$( dialog --stdout	--yes-label Sim	--no-label Não	\
+ dialog --stdout	--yes-label Sim	--no-label Não		\
 	--title 'Atualização de pacotes'			\
 	--yesno ' Deseja realmente atualizar todos os pacotes ?'\
-	0 0) 
+	0 0
 AT=$?
+ 
 if [ $AT = 0 ]; then 
-	apt-get update #> TRASH
+	apt-get update
 	CONFIRM
 fi
+
+MENUS
 
 }
 
 INPCT(){
+
 PA=$( dialog --stdout						\
 	--title 'Instalação de pacotes'				\
 	--inputbox 'Qual o nome do pacote que deseja instalar? '\
 	0 0)
-	apt-get install $PA #> TRASH
+	apt-get install $PA 
 	CONFIRM
-}
 
+	MENUS
+
+VERIFY $PA
+}
 DNPCT(){
 RE=$( dialog --stdout						\
 	--title 'Remoção de pacotes'				\
 	--inputbox 'Qual o nome do pacote que deseja remover? '	\
 	0 0)
-	apt-get autoremove $RE --purge #> TRASH
+	apt-get autoremove $RE --purge 
 	CONFIRM
-}
 
+	MENUS
+
+VERIFY $RE
+}
 MENUS(){
 CENTRAL=$( dialog --stdout 		     \
 		--title "Menu repositorios"  \
@@ -701,13 +705,13 @@ case $CENTRAL in
 	1) ATPCT ;;
 	2) INPCT ;;
 	3) DNPCT ;;
-	#4)
+	4) RAIZ ;;
 esac
 }
-####################################################################################################################################
+#############################################################################################################
 MENUS
-
 }
+
 function RAIZ (){
 clear
 MENU=$( dialog --stdout						\
@@ -718,14 +722,14 @@ MENU=$( dialog --stdout						\
 		2 'Gerenciamento de Arquivo'			\
 		3 'Gerenciamento de Rede   '			\
 		4 'Gerenciamento de Repositorio'		\
-		5 'Gerenciamento de Dispositivo')
+		5 'Sair')
 case $MENU in 
 	1) GU ;;
 	2) GA ;;
 	3) GRD ;;
 	4) GR ;;
-	5) GD ;;
+	5) exit 0 ;;
 esac
 }
-##################################################################################################################################
+##############################################################################################################
 RAIZ
