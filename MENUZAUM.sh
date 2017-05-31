@@ -58,9 +58,9 @@ if (( $OP == "1")); then
 
 
 elif (( $OP == "2")); then
-	APAGAR=$( dialog 	--stdout			    \
-				--title 'Nome do usuário'	    \
-				--inputbox 'Insira o nome do pivet' \
+	APAGAR=$( dialog 	--stdout			      \
+				--title 'Nome do usuário'	      \
+				--inputbox 'Insira o nome do usuário' \
 				0 0)
 		VERIFY $APAGAR
 userdel -r $APAGAR
@@ -112,6 +112,8 @@ INICIAR
 
 #----------------------------------------------------------------------------#
 MODU(){
+	VZS=1
+while (( $VZS != 0 )); do
 	PESQUISA=$( dialog 	--stdout				\
 				--title 'Pesquisa' 			\
 				--inputbox 'Insira o nome do usuário' 	\
@@ -119,34 +121,33 @@ MODU(){
 	VERIFY $PESQUISA
 RESUL=$(grep $PESQUISA /etc/passwd)
 
-
  dialog --stdout --yes-label Confirma --no-label Voltar			\
 	--title 'Confirme' 						\
 	--yesno "$RESUL. Este é o usuário que você deseja altera?" 	\
 7 60
 
 CONF=$?
-
 	if [ $CONF == "0" ]; then
 	NPASS=$( dialog 	--stdout				\
 			--title 'Nova senha' 				\
 			--inputbox 'Insira a nova senha do usuário' 	\
 			0 0)
-			VERIFY $NPASS
+	VERIFY $NPASS
 	CONF_PN=$( dialog 	--stdout				\
 				--title 'Confirmação' 			\
 				--passwordbox 'Confirme a senha do usuário' \
 				0 0)
-		
+	VERIFY $CONF_PN
 		(echo $CONF_PN ; echo $CONF_PN) | passwd $PESQUISA
 		CONFIRM
-	else
+	elif [ $CONF == "1" ]; then
 		dialog --stdout --msgbox "Senha inconpativél" 0 0
-	
+		break
 	fi
-
+done
 
 INICIAR
+
 }
 
 #----------------------------------------------------------------------------#
@@ -287,8 +288,13 @@ INICIAR
 
 }
 
+VLISU(){
+dialog --title "Lista de usuários" --textbox /etc/passwd 0 0 
+}
 
-
+VLISG(){
+dialog --title "Lista de grupos" --textbox /etc/group 0 0
+}
 #----------------------------------------------------------------------------#
 
 INICIAR(){
@@ -302,7 +308,9 @@ OP=$( dialog	--stdout			\
 	3 'Modificar senha de  usuarios'		\
 	4 'Modificar grupos'				\
 	5 'Modificar permissões'			\
-	6 'Voltar')
+	6 'Verificar lista de usuários'			\
+	7 'Verificar lista de grupos'			\
+	8 'Voltar')
 
 case $OP in
 	1)CAU ;;
@@ -310,8 +318,9 @@ case $OP in
 	3)MODU ;;
 	4)MODG ;;
 	5)MODP ;;
-	6)RAIZ ;;
-	
+	6)VLISU ; INICIAR ;;
+	7)VLISG ; INICIAR ;;
+	8)RAIZ ;;
 esac
 
 }
@@ -533,7 +542,7 @@ case $MENU in
   6) RAIZ ;; 
 esac
 }
-#####################################Programa################################################
+################################Programa#################################
 LOBY
 }
 GRD(){
@@ -574,17 +583,6 @@ if [ $DIG == 0 ]; then
 fi
 }
 #---------------------------------------------------------------------#
-#function CONFIGAT(){
-#GAT=$( dialog --stdout --ok-label Continuar --cancel-label Cancelar 	\
-#	--title 'Configurar Gateway'					\
-#	--inputbox 'Digite o Gateway desejado : '			\
-#	0 0)
-#DIG=$?
-#if [ $DIG == 0 ]; then 
-#	ip route add default via $GAT metric 1
-#fi
-#}
-#-------------------------------------------------------------------#
 function ADP(){
 AT=$( dialog --stdout --ok-label Continuar --cancel-label Cancelar	\
 	--title 'Ativando ou desativando a placa'			\
@@ -633,23 +631,21 @@ REDE=$( dialog --stdout					\
 	--menu 'Escolha a opção desejada: '		\
 	0 0 0						\
 	1 'Configurar IP expecificando a mascara'	\
-	2 'Configurar Gateway'				\
-	3 'Remover IP'					\
-	4 'Ativando ou desativando a placa'		\
-	5 'Configurar interface em dhcp'		\
-	6 'Voltar')
+	2 'Remover IP'					\
+	3 'Ativando ou desativando a placa'		\
+	4 'Configurar interface em dhcp'		\
+	5 'Voltar')
 case $REDE in 
 	1) CONFIP ;;
-	2) CONFIGAT ;;
- 	3) REMIP ;;
-	4) ADP ;;
-	5) CONFDHCP ;; 
-	6) RAIZ ;;
+	2) REMIP ;;
+	3) ADP ;;
+	4) CONFDHCP ;; 
+	5) RAIZ ;;
 esac
 }
 QNT
 }
-#############################################################################################
+###############################################################################
 GR(){
 ATPCT(){
  dialog --stdout	--yes-label Sim	--no-label Não		\
@@ -708,7 +704,7 @@ case $CENTRAL in
 	4) RAIZ ;;
 esac
 }
-#############################################################################################################
+###############################################################################
 MENUS
 }
 
@@ -731,5 +727,5 @@ case $MENU in
 	5) exit 0 ;;
 esac
 }
-##############################################################################################################
+########################################################################
 RAIZ
