@@ -414,12 +414,12 @@ VDIR
 			--inputbox 'insira o nome do arquivo'		\
 			0 0)
 	VERIFY $ARQ
-	SELEC=$( dialog   --stdout					\
+	SELEC=$( dialog --stdout					\
 			--title	'Nome do diretorio onde deseja copiar'	\
 			--inputbox 'Insira o nome do diretorio'		\
 			0 0)
 	VERIFY $SELEC
-		cp $ARQ $SELECIONAR
+		cp $ARQ $SELEC
 		CONFIRM
 elif [ $OPIS == "2" ]; then
 	VDIR
