@@ -404,8 +404,8 @@ OPIS=$( dialog 	--stdout                                 	\
         --title 'Tipo'                            		\
         --menu 'Deseja copiar Arquivo ou Diretorio? '           \
         0 0 0                                                   \
-        1 'Arquivo'                                               \
-        2 'Diretorio'                                            \
+        1 'Arquivo'                                             \
+        2 'Diretorio'                                           0\
         3 'Voltar')
 if [ $OPIS == "1" ]; then
 VDIR
@@ -525,7 +525,51 @@ ARQ=$( dialog   --stdout					\
 done
 	LOBY
 }
+BKARQ(){
+CENTRAL=$(dialog --stdout 					\
+		--title "Backup de arquivos e diretórios."	\
+		--menu "Escolha uma opção."			\
+		0 0 0						\
+		1 'Comprimir arquivo ou diretorio'		\
+		2 'Extrair arquivo ou diretorio'		\
+		3 'Verificar arquivo comprimido.'		\
+		4 'Voltar')
+if [ $CENTRAL == "1" ]; then
+NOME=$( dialog --stdout 					\
+	--title "Comprimir"					\
+	--inputbox "Digite o nome do arquivo ou diretorio" 	\
+	0 0)
+	VERIFY $NOME
+tar -zcf $NOME.tar $NOME
+	CONFIRM
+ dialog 	 --yes-label Atual --no-label EspecÍfico		\
+		--title 'Local para o arquivo comprimido'	 				\
+		--yesno 'Selecione um local para o arquivo'	 			\
+		0 0
+OP=$?
+	if [ $OP == 0 ]; then
+		VERDIR=(ls)
+dialog --title "Arquivos do diretorio atual." --msgbox "$VERDIR" 0 0
+	elif [ $OP == 1 ]; then
+		DESTIN=$( dialog --stdout 				\
+				--title 'Especifico' 			\
+				--inputbox 'Digite o nome do diretorio' \
+				0 0)
+	 	 mv $NOME.tar $DESTIN
+	fi
 
+elif [ $CENTRAL == "2" ]; then
+  echo xau 
+elif [ $CENTRAL == "3" ]; then
+  dialog 	 --yes-label Atual --no-label EspecÍfico		\
+		--title 'Local para o arquivo comprimido'	 				\
+		--yesno 'Selecione um local para o arquivo'	 			\
+		0 0
+
+elif [ $CENTRAL == "4" ]; then
+	 RAIZ
+fi
+}
 LOBY(){
 PWD=$(pwd)
 MENU=$(dialog --stdout                          	\
@@ -537,7 +581,8 @@ MENU=$(dialog --stdout                          	\
  3 'Mover ou renomear arquivos e diretorios'		\
  4 'Apagar arquivos e diretorios'			\
  5 'Verificar diretorios'				\
- 6 'Voltar')						\
+ 6 'Backup de arquivos e diretorios'			\
+ 7 'Voltar')						
 
 case $MENU in
 
@@ -546,7 +591,9 @@ case $MENU in
   3) MRARQ ;;
   4) APARQ ;;
   5) VDIR ; LOBY ;;
-  6) RAIZ ;; 
+  6) BKARQ ;;
+  7) RAIZ ;; 
+
 esac
 }
 ################################Programa#################################
