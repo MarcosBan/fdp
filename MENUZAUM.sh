@@ -405,7 +405,7 @@ OPIS=$( dialog 	--stdout                                 	\
         --menu 'Deseja copiar Arquivo ou Diretorio? '           \
         0 0 0                                                   \
         1 'Arquivo'                                             \
-        2 'Diretorio'                                           0\
+        2 'Diretorio'                                           \
         3 'Voltar')
 if [ $OPIS == "1" ]; then
 VDIR
@@ -543,8 +543,8 @@ NOME=$( dialog --stdout 					\
 tar -zcf $NOME.tar $NOME
 	CONFIRM
  dialog 	 --yes-label Atual --no-label EspecÍfico		\
-		--title 'Local para o arquivo comprimido'	 				\
-		--yesno 'Selecione um local para o arquivo'	 			\
+		--title 'Local para o arquivo comprimido'		\
+		--yesno 'Selecione um local para o arquivo'	 	\
 		0 0
 OP=$?
 	if [ $OP == 0 ]; then
@@ -557,9 +557,44 @@ dialog --title "Arquivos do diretorio atual." --msgbox "$VERDIR" 0 0
 				0 0)
 	 	 mv $NOME.tar $DESTIN
 	fi
-
+	
 elif [ $CENTRAL == "2" ]; then
-  echo xau 
+
+ dialog 	 --yes-label Atual --no-label EspecÍfico		\
+		--title 'Local para o arquivo comprimido'		\
+		--yesno 'Selecione um local para o arquivo'	 	\
+		0 0
+OP=$?
+	if [ $OP == 0 ]; then
+	NOME=$( dialog --stdout 					\
+	--title "Extrair"					\
+	--inputbox "Digite o nome do arquivo ou diretorio" 	\
+	0 0)
+	VERIFY $NOME
+		tar -xzf $NOME.tar $NOME
+	CONFIRM
+	elif [ $OP == 1 ]; then
+	NOME=$( dialog --stdout 					\
+	--title "Extrair"					\
+	--inputbox "Digite o nome do arquivo ou diretorio" 	\
+	0 0)
+	VERIFY $NOME
+		tar -xzf $NOME.tar $NOME
+		DESTIN=$( dialog --stdout 				\
+				--title 'Especifico' 			\
+				--inputbox 'Digite o nome do diretorio' \
+				0 0)
+	 	 mv $NOME.tar $DESTIN
+	fi
+
+NOME=$( dialog --stdout 					\
+	--title "Extrair"					\
+	--inputbox "Digite o nome do arquivo ou diretorio" 	\
+	0 0)
+	VERIFY $NOME
+tar -xzf $NOME.tar $NOME
+	CONFIRM
+	
 elif [ $CENTRAL == "3" ]; then
   dialog 	 --yes-label Atual --no-label EspecÍfico		\
 		--title 'Local para o arquivo comprimido'	 				\
