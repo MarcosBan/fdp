@@ -593,8 +593,9 @@ dialog --title "Arquivos do diretorio atual." --msgbox "$VERDIR" 0 0
 	CONT=$(tar -tz -f $NOME.tar)
 	dialog --stdout --title "Conteúdo" --msgbox "$CONT" 0 0
 	CONFIRM
-	elif[ $CENTRAL == "4" ]; then
-	break 
+	else
+	
+	break
 fi
 
 done
