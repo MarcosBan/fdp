@@ -151,6 +151,8 @@ CONF=$?
 		dialog --stdout --msgbox "Senha inconpativél" 0 0
 		break
 	fi
+
+VZS=1
 done
 
 INICIAR
@@ -285,7 +287,6 @@ OPI=$( dialog    --stdout                        \
 		VERIFY $WAY
 		chgrp $GRUPO $WAY  
 		CONFIRM
-		
 	fi
 VZS=$?
 
@@ -356,7 +357,6 @@ dialog --stdout --title "Arquivos do diretorio atual." --msgbox "$VERDIR" 0 0
 		dialog --stdout	--title "Arquivos do diretorio $PESQUISA." --msgbox "$PVERDIR" 0 0
 	fi
 }
-
 
 
 ######################### FUNÇÃO ######################################
@@ -526,6 +526,8 @@ done
 	LOBY
 }
 BKARQ(){
+ VZS=1
+while (( $VZS != "0" )); do
 CENTRAL=$(dialog --stdout 					\
 		--title "Backup de arquivos e diretórios."	\
 		--menu "Escolha uma opção."			\
@@ -543,12 +545,12 @@ NOME=$( dialog --stdout 					\
 tar -zcf $NOME.tar $NOME
 	CONFIRM
  dialog 	 --yes-label Atual --no-label EspecÍfico		\
-		--title 'Local para o arquivo comprimido'		\
+		--title 'Arquivo comprimido'				\
 		--yesno 'Selecione um local para o arquivo'	 	\
 		0 0
 OP=$?
-	if [ $OP == 0 ]; then
-		VERDIR=(ls)
+	if [ $OP == "0" ]; then
+		VERDIR=$(ls)
 dialog --title "Arquivos do diretorio atual." --msgbox "$VERDIR" 0 0
 	elif [ $OP == 1 ]; then
 		DESTIN=$( dialog --stdout 				\
@@ -557,29 +559,23 @@ dialog --title "Arquivos do diretorio atual." --msgbox "$VERDIR" 0 0
 				0 0)
 	 	 mv $NOME.tar $DESTIN
 	fi
-	
-elif [ $CENTRAL == "2" ]; then
 
- dialog 	 --yes-label Atual --no-label EspecÍfico		\
-		--title 'Local para o arquivo comprimido'		\
+	elif [ $CENTRAL == "2" ]; then
+	NOME=$( dialog --stdout 				\
+	--title "Extrair"					\
+	--inputbox "Digite o nome do arquivo ou diretorio" 	\
+	0 0)
+	VERIFY $NOME
+		tar -xzf $NOME.tar 
+		 dialog 	 --yes-label Atual --no-label EspecÍfico		\
+		--title 'Arquivo extraido'				\
 		--yesno 'Selecione um local para o arquivo'	 	\
 		0 0
 OP=$?
-	if [ $OP == 0 ]; then
-	NOME=$( dialog --stdout 					\
-	--title "Extrair"					\
-	--inputbox "Digite o nome do arquivo ou diretorio" 	\
-	0 0)
-	VERIFY $NOME
-		tar -xzf $NOME.tar $NOME
-	CONFIRM
+	if [ $OP == "0" ]; then
+		VERDIR=$(ls)
+dialog --title "Arquivos do diretorio atual." --msgbox "$VERDIR" 0 0
 	elif [ $OP == 1 ]; then
-	NOME=$( dialog --stdout 					\
-	--title "Extrair"					\
-	--inputbox "Digite o nome do arquivo ou diretorio" 	\
-	0 0)
-	VERIFY $NOME
-		tar -xzf $NOME.tar $NOME
 		DESTIN=$( dialog --stdout 				\
 				--title 'Especifico' 			\
 				--inputbox 'Digite o nome do diretorio' \
@@ -587,23 +583,23 @@ OP=$?
 	 	 mv $NOME.tar $DESTIN
 	fi
 
-NOME=$( dialog --stdout 					\
-	--title "Extrair"					\
-	--inputbox "Digite o nome do arquivo ou diretorio" 	\
+	elif [ $CENTRAL == "3" ]; then
+	NOME=$( dialog --stdout 					\
+	--title "Verificar arquivo"					\
+	--inputbox "Digite o nome do arquivo ou diretorio"	 	\
 	0 0)
-	VERIFY $NOME
-tar -xzf $NOME.tar $NOME
-	CONFIRM
 	
-elif [ $CENTRAL == "3" ]; then
-  dialog 	 --yes-label Atual --no-label EspecÍfico		\
-		--title 'Local para o arquivo comprimido'	 				\
-		--yesno 'Selecione um local para o arquivo'	 			\
-		0 0
-
-elif [ $CENTRAL == "4" ]; then
-	 RAIZ
+	VERIFY $NOME
+	CONT=$(tar -tz -f $NOME.tar)
+	dialog --stdout --title "Conteúdo" --msgbox "$CONT" 0 0
+	CONFIRM
+	elif[ $CENTRAL == "4" ]; then
+	break 
 fi
+
+done
+
+LOBY
 }
 LOBY(){
 PWD=$(pwd)
@@ -777,6 +773,15 @@ RE=$( dialog --stdout						\
 
 VERIFY $RE
 }
+LSPCT(){
+>.lista
+apt list --installed > .lista
+dialog --stdout --title "Arquivos instalados" --textbox .lista 0 0
+CONFIRM
+
+MENUS
+}
+
 MENUS(){
 CENTRAL=$( dialog --stdout 		     \
 		--title "Menu repositorios"  \
@@ -785,12 +790,15 @@ CENTRAL=$( dialog --stdout 		     \
 		1 'Atualizar pacotes'	\
 		2 'Instalar pacotes'	\
 		3 'Desinstalar pacotes'	\
-		4 'Voltar')
+		4 'Lista de pacotes'	\
+		5 'Voltar')
+
 case $CENTRAL in
 	1) ATPCT ;;
 	2) INPCT ;;
 	3) DNPCT ;;
-	4) RAIZ ;;
+	4) LSPCT ;;
+	5) RAIZ ;;
 esac
 }
 ###############################################################################
